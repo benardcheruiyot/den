@@ -1,19 +1,19 @@
 // PM2 Ecosystem Configuration for MKOPAJI Production
 module.exports = {
   apps: [{
-    name: 'mkopaji-production',
+    name: 'pata-mkopaji-production',
     script: 'backend/server.js',
     instances: 'max', // Use all available CPU cores
     exec_mode: 'cluster',
-    
+
     // Environment variables
     env: {
       NODE_ENV: 'development',
-      PORT: 3000
+      PORT: 3005
     },
     env_production: {
       NODE_ENV: 'production',
-      PORT: 3000
+      PORT: 3005
     },
     
     // Logging
