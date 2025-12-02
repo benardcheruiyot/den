@@ -1,4 +1,4 @@
-name: Deploy Express App to EC2 Ubuntu
+name: Deploy Pata.Mkopaji App to EC2 Ubuntu
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 env:
   NODE_VERSION: '18'
-  APP_NAME: 'fundfast-production'
+  APP_NAME: 'pata-mkopaji-production'
 
 jobs:
   test:
@@ -55,9 +55,11 @@ jobs:
     - name: 📁 Deploy files to server
       uses: appleboy/scp-action@v0.1.7
       with:
+        host: ${{ secrets.EC2_HOST }}
         username: root
+        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         source: .
-        target: /var/www/html/kopesha-loan-app
+        target: /var/www/html/pata.mkopaji
         strip_components: 1
         port: 22
         timeout: 30s
@@ -81,7 +83,7 @@ jobs:
         username: root
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         script: |
-          cd /var/www/html/kopesha-loan-app
+          cd /var/www/html/pata.mkopaji
           
           echo "🚀 Starting deployment..."
           
@@ -138,14 +140,14 @@ jobs:
           echo "🎉 Deployment completed successfully!"
           echo "📊 Final status:"
           pm2 status ${{ env.APP_NAME }}
-          echo "🌐 Application should be available at: http://${{ secrets.EC2_HOST }}:3000"
+          echo "🌐 Application should be available at: https://pata.mkopaji.com:3005"
 
     - name: 📱 Slack notification (success)
       if: success()
       run: |
         if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
           curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"✅ Deployment successful! FundFast app has been deployed to production server."}' \
+          --data '{"text":"✅ Deployment successful! Pata.Mkopaji app has been deployed to production server."}' \
           ${{ secrets.SLACK_WEBHOOK_URL }}
         fi
 
